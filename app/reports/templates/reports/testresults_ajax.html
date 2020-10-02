@@ -1,0 +1,218 @@
+{% extends "main/base.html" %}
+
+{%  block style %}
+    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" media="screen">
+{% endblock %}
+
+{%  block content %}
+
+    <!-- results search forms -->
+
+    <div class="row">
+        <div>
+
+        {% if form %}
+
+            <h3 class="testresults">Select Results Parameters</h3>
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                <table class="search_by_date_form">
+
+                    <tr>
+                        <td class="formlabel">{{form.instrument.label}}</td>
+                        <td class="formfield">{{form.instrument}}</td>
+                    </tr>
+                    <tr>
+                        <td></td><td>
+                            {% for error in form.instrument.errors %}
+                                <span class="text-danger">[{{ error }}]</span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="formlabel">{{form.start_date.label}}</td>
+                        <td class="formfield">{{form.start_date}}</td>
+                    </tr>
+                    <tr>
+                        <td></td><td>
+                            {% for error in form.start_date.errors %}
+                                <span class="text-danger">[{{ error }}]</span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="formlabel">{{form.end_date.label}}</td>
+                        <td class="formfield">{{form.end_date}}</td>
+                    </tr>
+                    <tr>
+                        <td></td><td>
+                            {% for error in form.end_date.errors %}
+                                <span class="text-danger">[{{ error }}]</span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td></td><td class="submit">
+                            {{ form.submit() }}
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        {% else %}
+            <p>
+                Problem loading the results request form.
+            </p>
+        {% endif %}
+        </div>
+    </div>
+
+  <!-- results table -->
+
+    <div class="row results_table_row">
+        <div class="test_results_table">
+
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{%  block javascript %}
+
+<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script>
+$(document).ready(function() {
+
+    // function to generate loading gif html
+    const LoadingGif = () => {
+        var loading_html = `
+        <div class="form-notifications col-sm-5 col-sm-offset-1">
+            <p>Please wait loading results...</p>
+            <img class="loading-gif" src='{{ url_for("main.static", filename="images/loading.gif") }}' />
+        </div>
+        `;
+        return loading_html;
+    }
+
+    // Function to build basic html structure of results table
+    const BaseTableBuilder = (values) => {
+
+        var header_row = "";
+        for (i=0; i < values.length; i++)
+        {
+            header_row += "<th>"+ values[i] + "</th>";
+        }
+
+        var table_html = `
+        <table id="test_results" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    ${header_row}
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+        `;
+
+        return table_html;
+    }
+
+    // Function to build a row to insert into results table
+    const TableRowBuilder = (values) => {
+
+        var row = "<tr>"
+
+        for (i=0; i < values.length; i++)
+        {
+            row += "<td>" + values[i] + "</td>";
+        }
+
+        return row + "</tr>";
+    }
+
+    // function to generate error html
+    const ErrorReport = (error) => {
+        var error_html = `
+        <div class="form-notifications text-danger col-sm-5 col-sm-offset-1">
+            <p>Error: ${error} </p>
+        </div>
+        `;
+        return error_html;
+    }
+
+    // AJAX call to fetch results
+    $('form').submit(function (e) {
+
+        var url = "{{ form_submit_url }}"; // send the form data here.
+        var csrf_token =  "{{ form.csrf_token._value() }}";
+        var user_token = "{{ current_user.get_token() }}"
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            beforeSend: function (xhr) {
+
+                // deactivate submit button
+
+                // place loading message and gif
+                $('.test_results_table').html(LoadingGif());
+
+                // send tokens
+                xhr.setRequestHeader('Authorization', 'Bearer ' + user_token);
+                xhr.setRequestHeader("X-CSRFToken", csrf_token)
+
+            },
+            data: JSON.stringify($('form').serialize(),  // serializes the form's elements.
+            success: function (jsondata) {
+
+                // viable keys: errors, fields, instrument_lookup, tests
+
+                if (("error" in jsondata) == true)
+                {
+                    // boo error
+                    $('.test_results_table').html(ErrorReport(jsondata['error']));
+                }
+                else
+                {
+                    // build html table and add it to the DOM
+                    $('.test_results_table').html(BaseTableBuilder(jsondata['fields'])).hide();
+
+                    $('table#test_results tbody').html(TableRowBuilder(jsondata['tests'][0]));
+
+                    // add table rows to the DOM
+                    for (i = 1; i<jsondata['tests'].length; i++) {
+                        $('table#test_results > tbody:last-child').append(TableRowBuilder(jsondata['tests'][0]));
+                    }
+                }
+
+            },
+            error: function (responsedata) {
+                // errors caught on server side and passed back in success block
+
+            },
+            complete: function (responsedata) {
+
+                // reactivate submit button
+                console.log(responsedata.responseJSON['tests'][0]);
+
+                if  ($('#test_results').length)
+                {
+                    $('#test_results').DataTable();
+                    $('.test_results_table').show();
+                }
+
+            }
+        });
+        e.preventDefault(); // block the traditional submission of the form.
+    });
+
+});
+
+
+</script>
+{% endblock %}

@@ -1,0 +1,13 @@
+Flask
+Flask-Bootstrap
+Flask-Login
+Flask-Migrate
+Flask-SQLAlchemy
+Flask-WTF
+Flask-Collect
+Flask-HTTPAuth
+psycopg2-binary
+requests
+numpy
+redis
+rq

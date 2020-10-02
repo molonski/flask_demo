@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  web:
+    build: ./app
+    command: flask run
+    volumes:
+      - app_data:/usr/src/app/
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+      - redis
+  db:
+    image: postgres:12.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=flask_demo
+      - POSTGRES_PASSWORD=flask_demo_password
+      - POSTGRES_DB=flask_demo_dev
+  redis:
+    image: "redis:alpine"
+    volumes:
+      - redis_data:/data/
+  worker:
+    build: ./worker
+    command: rq worker --url redis://redis:6379
+    env_file:
+      - ./.env.dev
+    volumes:
+      - app_data:/usr/src/app/
+    depends_on:
+      - web
+
+volumes:
+  app_data:
+  postgres_data:
+  redis_data:
+

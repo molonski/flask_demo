@@ -1,0 +1,60 @@
+{% extends "main/base.html" %}
+
+{% block style %}
+    <style>
+        .login input
+            {
+                margin-top: 10px;
+                width: 235px;
+                height: 25px;
+                border: 1px solid #aaa;
+                border-radius: 5px;
+                background-color: lightgreen;
+            }
+        .label {
+            font-size: small;
+            color: dimgrey;
+        }
+
+        .login_info
+            {
+                margin: 10px 0 0 5px;
+                width: 600px;
+                font-size: small;
+                color: grey;
+
+            }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <br/>
+    <p class="login_info">
+        I wouldn't normally post the login information publicly, but for you I'll make an exception.
+        <br/>
+        username: <b>interview</b>
+        <br/>
+        password: <b>hire</b>
+    </p>
+    <br/>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            <span class="label">{{ form.username.label }}</span><br>
+            {{ form.username(size=32) }}<br>
+            {% for error in form.username.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <span class="label">{{ form.password.label }}</span><br>
+            {{ form.password(size=32) }}<br>
+            {% for error in form.password.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.remember_me() }} <span class="label">{{ form.remember_me.label }}</span></p>
+        <p class="login">{{ form.submit() }}</p>
+    </form>
+{% endblock %}

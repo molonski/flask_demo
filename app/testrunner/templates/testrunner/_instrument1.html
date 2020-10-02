@@ -1,0 +1,132 @@
+
+
+
+<!--
+Power Button
+-->
+
+<tr class="test-plan-row" data-step="">
+    <td><b>Step <span class="step-number"></span></b></td><td>
+
+        <p>Plug in the power USB cables. Make sure the USB cable is connected to the laptop too.</p>
+        <p>Next press power button on the side of the instrument.</p>
+
+    </td><td>
+
+        <p>Did the Instrument1 green power light turn on?</p>
+
+        <img src="{{ url_for('testrunner.static', filename='images/instrument1/power_button_arrow.png') }}"
+             class="form-example-image" height="200"/>
+
+    </td><td>
+
+        <div class="btn-group step-result" data-toggle="buttons" role="group" aria-label="power-on">
+            <label class="btn btn-default">
+                <input type="radio" name="power-on" value="1" /> Yes
+            </label>
+            <label class="btn btn-default">
+                <input type="radio" name="power-on" value="0" /> No
+            </label>
+        </div>
+
+    </td>
+</tr>
+
+<!--
+Volume Knob
+-->
+
+<tr class="test-plan-row" data-step="">
+    <td><b>Step <span class="step-number"></span></b></td><td>
+
+        <p>Turn volume knob clockwise until all volume lights are lit up.</p>
+        <p>Next turn the volume knob counter clockwise until all volume lights are off.</p>
+
+    </td><td>
+
+        <p>Do all volume lights function properly?</p>
+
+        <img src="{{ url_for('testrunner.static', filename='images/instrument1/volume_range.png') }}"
+             class="form-example-image" height="200"/>
+
+    </td><td>
+
+        <div class="btn-group step-result" data-toggle="buttons" role="group">
+            <label class="btn btn-default">
+                <input type="radio" name="volume" value="1" /> Yes
+            </label>
+            <label class="btn btn-default">
+                <input type="radio" name="volume" value="0" /> No
+            </label>
+        </div>
+
+    </td>
+</tr>
+
+<!--
+Capo Buttons
+-->
+
+<tr class="test-plan-row" data-step="">
+    <td><b>Step <span class="step-number"></span></b></td><td>
+
+        <p>Test the capo up button. Press it until all capo lights are illuminated.</p>
+        <p>Test the capo down button. Press it until all capo lights are off.</p>
+
+    </td><td>
+
+        <p>Do all capo lights work properly?</p>
+
+        <img src="{{ url_for('testrunner.static', filename='images/instrument1/capo_range.png') }}"
+             class="form-example-image" height="200"/>
+    </td><td>
+
+        <div class="btn-group step-result" data-toggle="buttons" role="group">
+            <label class="btn btn-default">
+                <input type="radio" name="capo" value="1" /> Yes
+            </label>
+            <label class="btn btn-default">
+                <input type="radio" name="capo" value="0" /> No
+            </label>
+        </div>
+
+    </td>
+</tr>
+
+
+<!--
+Hardware Preset Button
+-->
+
+<tr class="test-plan-row" data-step="">
+    <td><b>Step <span class="step-number"></span></b></td><td>
+
+        <p>Press the volume dial eight times. Watch the Current Preset light change position with each
+            press of the button. The light should move through all positions inside the red box shown
+            in the photo to the right.</p>
+
+    </td><td>
+
+        <p>Do all hardware preset lights work properly?</p>
+
+        <img src="{{ url_for('testrunner.static', filename='images/instrument1/hw_presets.png') }}"
+             class="form-example-image" height="200"/>
+
+    </td><td>
+
+        <div class="btn-group step-result" data-toggle="buttons" role="group" aria-label="hw-preset">
+            <label class="btn btn-default">
+                <input type="radio" name="hw-preset" value="1" /> Yes
+            </label>
+            <label class="btn btn-default">
+                <input type="radio" name="hw-preset" value="0" /> No
+            </label>
+        </div>
+
+    </td>
+</tr>
+
+<!--
+========================================================================================================================
+-->
+

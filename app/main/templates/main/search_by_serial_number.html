@@ -1,0 +1,43 @@
+
+{% if by_sn_form %}
+
+    <form action="" method="post" novalidate>
+        {{ by_sn_form.hidden_tag() }}
+        <table class="search_by_date_form">
+
+            <tr>
+                <td class="formlabel">{{by_sn_form.instrument.label}}</td>
+                <td class="formfield">{{by_sn_form.instrument}}</td>
+            </tr>
+            <tr>
+                <td></td><td>
+                    {% for error in by_sn_form.instrument.errors %}
+                        <span class="text-danger">[{{ error }}]</span>
+                    {% endfor %}
+                </td>
+            </tr>
+
+            <tr>
+                <td class="formlabel">{{by_sn_form.serial_number.label}}</td>
+                <td class="formfield">{{by_sn_form.serial_number(size=32)}}</td>
+            </tr>
+            <tr>
+                <td></td><td>
+                    {% for error in by_sn_form.serial_number.errors %}
+                        <span class="text-danger">[{{ error }}]</span>
+                    {% endfor %}
+                </td>
+            </tr>
+
+            <tr class="submit">
+                <td></td><td>
+                    {{ by_sn_form.submitbysn() }}
+                </td>
+            </tr>
+        </table>
+    </form>
+{% else %}
+    <p>
+        Problem loading the results request form.
+    </p>
+{% endif %}

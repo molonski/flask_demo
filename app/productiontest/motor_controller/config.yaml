@@ -1,0 +1,44 @@
+# template for motor controller config
+# copy this file over to local_config.yaml
+# the local version won't get over written by git
+
+test_machine: "test machine name"
+usb_id: "/dev/tty.usbserial-00001014"
+globals:
+  CN: 1
+  HV: 1000
+  homing_speed: 10    # mm/s
+  operating_speed: 50 # mm/s
+  max_x: -546   # max x table dimension in mm
+  max_y: -343   # max y table dimension in mm
+servos:
+  x:  # long planar direction
+    motor_name: C
+    ball_screw_id: 1605
+    pitch: 5.0  # mm
+    steps_per_revolution: 200.0
+    step_down: 8.0
+  y: # short planar direction
+    motor_name: B
+    ball_screw_id: 1605
+    pitch: 5.0  # mm
+    steps_per_revolution: 200.0
+    step_down: 8.0
+  z:  # vertical ball screw actuator
+    motor_name: D
+    ball_screw_id: 1605
+    pitch: 5.0  # mm
+    steps_per_revolution: 200.0
+    step_down: 8.0
+    range: 7500
+ef: # end effector
+  motor_name: A
+  KP: 0
+  KI: 0
+  KD: 0
+  AG: 0
+  TL: 0.75
+  up: -0.75
+  down: 0.75
+
+

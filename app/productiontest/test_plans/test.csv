@@ -1,0 +1,13 @@
+sensor_name,x (mm),y (mm),z (mm),force (N),min_allowable,max_allowable
+string_1e.fret_1.fsr_1,-60,-100,5,1,1,1
+string_2b.fret_1.fsr_1,-60,-108.5,5,1,1,1
+string_3g.fret_1.fsr_1,-60,-117,5,1,1,1
+string_4d.fret_1.fsr_1,-60,-125.5,5,1,1,1
+string_5a.fret_1.fsr_1,-60,-134,45,1,1,1
+string_6e.fret_1.fsr_1,-60,-142.5,5,1,1,1
+string_6e.fret_1.fsr_2,-75.5,-142.5,5,1,1,1
+string_5a.fret_1.fsr_2,-75.5,-134,5,1,1,1
+string_4d.fret_1.fsr_2,-75.5,-125.5,5,1,1,1
+string_3g.fret_1.fsr_2,-75.5,-117,5,1,1,1
+string_2b.fret_1.fsr_2,-75.5,-108.5,5,1,1,1
+string_1e.fret_1.fsr_2,-75.5,-100,5,1,1,1

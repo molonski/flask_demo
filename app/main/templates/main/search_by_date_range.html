@@ -1,0 +1,67 @@
+
+{% if by_date_form %}
+
+    <form action="" method="post" novalidate>
+        {{ by_date_form.hidden_tag() }}
+        <table class="search_by_date_form">
+
+            <tr>
+                <td class="formlabel">{{by_date_form.instrument.label}}</td>
+                <td class="formfield">{{by_date_form.instrument}}</td>
+            </tr>
+            <tr>
+                <td></td><td>
+                    {% for error in by_date_form.instrument.errors %}
+                        <span class="text-danger">[{{ error }}]</span>
+                    {% endfor %}
+                </td>
+            </tr>
+
+            <tr>
+                <td class="formlabel">{{by_date_form.start_date.label}}</td>
+                <td class="formfield">{{by_date_form.start_date}}</td>
+            </tr>
+            <tr>
+                <td></td><td>
+                    {% for error in by_date_form.start_date.errors %}
+                        <span class="text-danger">[{{ error }}]</span>
+                    {% endfor %}
+                </td>
+            </tr>
+
+            <tr>
+                <td class="formlabel">{{by_date_form.end_date.label}}</td>
+                <td class="formfield">{{by_date_form.end_date}}</td>
+            </tr>
+            <tr>
+                <td></td><td>
+                    {% for error in by_date_form.end_date.errors %}
+                        <span class="text-danger">[{{ error }}]</span>
+                    {% endfor %}
+                </td>
+            </tr>
+
+            <tr>
+                <td class="formlabel">{{by_date_form.result.label}}</td>
+                <td class="formfield">{{by_date_form.result}}</td>
+            </tr>
+            <tr>
+                <td></td><td>
+                    {% for error in by_date_form.result.errors %}
+                        <span class="text-danger">[{{ error }}]</span>
+                    {% endfor %}
+                </td>
+            </tr>
+
+            <tr class="submit">
+                <td></td><td>
+                    {{ by_date_form.submitbydate() }}
+                </td>
+            </tr>
+        </table>
+    </form>
+{% else %}
+    <p>
+        Problem loading the results request form.
+    </p>
+{% endif %}

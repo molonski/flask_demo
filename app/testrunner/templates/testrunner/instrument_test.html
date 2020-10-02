@@ -1,0 +1,147 @@
+{% extends "main/base.html" %}
+
+{%  block content %}
+<div class="row">
+    <div class="col-md-12">
+        <span class="hidden check-install-url">{{ check_install_url }}</span>
+        <span class="hidden polling-url">{{ polling_url }}</span>
+        <span class="hidden log-file-url">{{ log_file_url }}</span>
+        <p class="text-danger text-center"><b><span class="install-error"></span></b></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="testresults">{{ instrument }} Production Test</h3>
+        <table class="table">
+
+            <thead>
+                <tr>
+                    <th width="75px"><!--Step Number--></th>
+                    <th>Instructions</th>
+                    <th width="35%">Question</th>
+                    <th width="135px">Result</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <! --
+                Enter Serial Number Row
+                -->
+
+                <tr class="test-plan-row" data-step="">
+                    <td><b>Step <span class="step-number"></span></b></td><td>
+
+                        <p>Enter Instrument Serial Number in the box to the right.</p>
+                        <p class="hidden inst_sn_timestamp"> <br/>
+                            <span class="text-muted">Instrument: </span><span class="instrument">{{ instrument }}</span>,
+                            <span class="text-muted">SN: </span><span class="serial-number"></span>
+                       </p>
+
+                    </td><td>
+                        <p><br/><br/></p>
+                        <p class="hidden inst_sn_timestamp"><span class="text-muted">Start Time:</span> <span class="start-time"></span></p>
+                    </td><td>
+
+                        <input type="serial-number" class="form-control step-result" id="serial-number"
+                               aria-describedby="serial-number" placeholder="Serial Number" autofocus>
+
+                    </td>
+                </tr>
+
+                {% if instrument|lower == "instrument1" %}
+
+                    {% include 'testrunner/_instrument1.html' %}
+
+                {% elif instrument|lower == "delorean" %}
+
+                    {% include 'testrunner/_delorean.html' %}
+
+                {% endif %}
+
+                <! --
+                Automated Job Start Row
+                -->
+
+                <tr class="test-plan-row" data-step="">
+                    <td><b>Step <span class="step-number"></span></b></td><td colspan="2">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p>Run automated test routine.</p>
+                                <span class="hidden automated-submit-url">{{ automated_submit_url }}</span>
+                                <button type="button" class="btn btn-success automated-tests">Start Automated Test Routine</button>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+
+                                <p class="job-submission hidden">
+                                    Task assigned to job: <b><span class="job-id"></span></b>
+                                </p>
+
+                                <p class="log-file-name hidden">
+                                    Log file: <b><span class="log-file-name"></span></b>
+                                </p>
+
+                                <div class="testpanel panel panel-primary hidden">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Automated Test Updates:</h3>
+                                    </div>
+                                    <div class="testpanel-body">
+                                        <pre class="tpb"></pre>
+                                    </div>
+                                </div>
+
+                                <p class="job-errors hidden"></p>
+
+                            </div>
+                        </div>
+
+                    </td><td>
+
+                    </td>
+                </tr>
+
+                <! --
+                Test Summary Row
+                -->
+
+                <tr class="test-plan-row hidden test-summary">
+                    <td></td><td colspan="2">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+
+                                <h4>Test Summary:</h4>
+
+                                <p><span class="text-muted">Test Result:</span> <b><span class="test-result"></span></b></p>
+                                <span class="hidden automated-submit-url">{{ automated_submit_url }}</span>
+                                <p><span class="text-muted">Start Time:</span> <span class="start-time"></span></p>
+                                <p><span class="text-muted">End Time:</span> <span class="end-time"></span></p>
+                                <p><span class="text-muted">Test Duration:</span> <span class="test-duration"></span> seconds</p>
+                                <p><span class="text-muted">Log file Path:</span> <span class="log-file-path"></span></p>
+                                <p><span class="text-muted">Results CSV Path:</span> <span class="results-csv-path"></span></p>
+
+
+
+                            </div>
+                        </div>
+                    </td><td>
+
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <div class="bottom_pad"></div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script src="{{ url_for('testrunner.static', filename='js/testrunner.js') }}"></script>
+{% endblock %}

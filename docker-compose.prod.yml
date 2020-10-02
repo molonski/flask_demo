@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.prod
+    command: gunicorn -b 0.0.0.0:5000 -w 4 flask_demo:app
+    volumes:
+      - app_data:/home/web/app/
+      - static_volume:/home/web/app/static/
+    expose:
+      - 5000
+    env_file:
+      - ./.env.prod
+    depends_on:
+      - db
+      - redis
+  db:
+    image: postgres:12.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env.prod.db
+  redis:
+    image: "redis:alpine"
+    volumes:
+      - redis_data:/data/
+  worker:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile.prod
+    command: rq worker --url redis://redis:6379
+    env_file:
+      - ./.env.prod
+    volumes:
+      - app_data:/home/web/app/
+    depends_on:
+      - web
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/home/web/app/static/
+    ports:
+      - 1337:80
+    depends_on:
+      - web
+
+volumes:
+  app_data:
+  postgres_data:
+  static_volume:
+  redis_data:

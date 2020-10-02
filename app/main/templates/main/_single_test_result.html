@@ -1,0 +1,119 @@
+<div class="modal-header">
+    <div class="col-sm-11">
+        <b>{{result.instrument|capitalize}}</b>, <b>SN: {{ result.serial_number }}</b>
+        {% if skipmodal %}
+
+        {% else %}
+           - <a href="{{ url_for('main.single_test', testlog_id=result.id)}}">share link</a>
+        {% endif %}
+    </div>
+    {% if skipmodal %}
+
+    {% else %}
+    <div class="col-sm-1">
+        <button type="button" class="close float-right" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+<br/>
+</div>
+
+<div class="modal-body">
+
+    <div class="row">
+        <div class="col-sm-3 sameheight "></br>Result:</div>
+        <div class="col-sm-6 sameheight two-em {% if result.result == 'fail' %}text-danger{% else %}text-success{% endif %}">
+            <b>{{result.result|upper}}</b>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 ">Date and Time:</div>
+        <div class="col-sm-6 ">{{result.timestamp}} </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 ">Instrument:</div>
+        <div class="col-sm-6 ">{{result.instrument|capitalize}} </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 ">Serial Number:</div>
+        <div class="col-sm-6 ">{{result.serial_number}} </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 ">Test Duration:</div>
+        <div class="col-sm-6 ">{{result.test_duration}} seconds</div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 ">Test SW Version:</div>
+        <div class="col-sm-6 ">{{result.test_sw_version}}</div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 ">Sensor Count:</div>
+        <div class="col-sm-6 ">{{result.sensor_measurement_count}} </div>
+    </div>
+
+
+    <br>
+    <hr>
+    <h5><b>Sensor Measurements:</b></h5>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Sensor Name</th>
+                <th>Measurement</th>
+                <th>Passing Range</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sensor in result.measurements %}
+            <tr>
+                <td>{{sensor[0]}}</td>
+                <td>{{sensor[1]}}</td>
+                <td>{{sensor[2]}} - {{sensor[3]}}</td>
+                <td class="{% if sensor[4] == 'fail' %}text-danger{% else %}text-success{% endif %}">
+                    <b>{{sensor[4]|upper}}</b>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h5><b>Calculations:</b></h5>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Calculation Name</th>
+                <th>Value</th>
+                <th>Passing Range</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for calc in result.calcs %}
+            <tr>
+                <td>{{calc[0]}}</td>
+                <td>{{calc[1]}}</td>
+                <td>{{calc[2]}} - {{calc[3]}}</td>
+                <td class="{% if calc[4] == 'fail' %}text-danger{% else %}text-success{% endif %}">
+                    <b>{{calc[4]|upper}}</b>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+
+
+</div>
+{% if skipmodal %}
+
+{% else %}
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>
+{% endif %}

@@ -1,0 +1,47 @@
+{% extends "main/base.html" %}
+
+{%  block content %}
+
+<div class="row">
+    <div class="col-md-9">
+        <h3 class="testresults">Select Instrument Under Test:</h3>
+
+        {% if form %}
+
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                <table class="search_by_date_form">
+
+                    <tr>
+                        <td class="formlabel">{{form.instrument.label}}</td>
+                        <td class="formfield">{{form.instrument}}</td>
+                    </tr>
+                    <tr>
+                        <td></td><td>
+                            {% for error in form.instrument.errors %}
+                                <span class="text-danger">[{{ error }}]</span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr class="submit">
+                        <td></td><td>
+                            {{ form.submitinst() }}
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+        {% else %}
+
+            <p>
+                Problem loading the results request form.
+            </p>
+
+        {% endif %}
+
+    </div>
+</div>
+
+
+{% endblock %}

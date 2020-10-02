@@ -1,0 +1,167 @@
+{% extends "main/base.html" %}
+
+{%  block content %}
+
+<div class="row">
+    <div class="col-md-9">
+        <div class="row">
+            <div class="col">
+                <ul class="nav nav-pills browse-pill">
+                    <!-- add data-toggle attribute to the anchors -->
+                    <li class="{% if active_tab == 'sn' %}active{% endif %}">
+                        <a data-toggle="tab" href="#serial-number">Search By Serial Number</a>
+                    </li>
+
+                    <li class="{% if active_tab == 'date' %}active{% endif %}">
+                        <a data-toggle="tab" href="#date-range">Search By Date Range</a>
+                    </li>
+                    {% if tests %}
+                    <li class="{% if active_tab == 'hide' %}active{% endif %}">
+                        <a data-toggle="tab" href="#hide-forms">Hide Search Forms</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <div class="tab-content">
+                    <div id="date-range" class="tab-pane search-tab fade{% if active_tab == 'date' %} in active{% endif %}">
+
+                        {% include 'main/search_by_date_range.html' %}
+
+                    </div>
+                    <div id="serial-number" class="tab-pane search-tab fade{% if active_tab == 'sn' %} in active{% endif %}">
+
+                        {% include 'main/search_by_serial_number.html' %}
+
+                    </div>
+                    <div id="hide-forms" class="tab-pane search-tab fade">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if tests %}
+        <hr>
+            <div class="row table-nav">
+            {% if tests.items %}
+
+                <div class="col-sm-3 text-left">
+                    {% if tests.has_prev %}
+                        <a href="{{ base_url }}?page={{ tests.prev_num}}&per-page={{ tests.per_page }}">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            Page {{ tests.prev_num }}
+                        </a>
+                    {% endif%}
+                </div>
+                <div class="col-sm-6 text-center">
+                    {% if tests.pages > 1 %}
+                    Page <b>{{tests.page}}</b> of <b>{{tests.pages}}</b>
+                    <br/>
+                    Results <b>{{ tests.per_page * (tests.page - 1) + 1 }}</b> to
+                    <b>{{ tests.per_page * tests.page }}</b> out of <b>{{ tests.total }}</b>
+                    {% endif %}
+                </div>
+
+                <div class="col-sm-3 text-right">
+                    {% if tests.has_next %}
+                        <a href="{{ base_url }}?page={{ tests.next_num}}&per-page={{ tests.per_page }}">
+                            Page {{ tests.next_num }}
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        </a>
+                    {% endif%}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                {% for field in fields %}
+                                  <th scope="col">{{ field|capitalize }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                            {% for test in tests.items %}
+                                <tr class="test_result">
+                                    <td>
+                                        <a class="modallink" href="#" data-id="{{ test[0] }}">
+                                            {{ test[1] }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {{ instrument }}
+                                    </td>
+                                    <td>
+                                        {% if not request.url_rule.endpoint == 'main.test_results_by_sn' %}
+                                            <a href="{{ url_for('main.test_results_by_sn', instrument=instrument, serial_number=test[2]) }}">
+                                                {{ test[2] }}
+                                            </a>
+                                        {% else %}
+                                            {{ test[2] }}
+                                        {% endif %}
+                                    </td>
+                                    <td class="{% if test[3] == 'fail' %}text-danger{% else %}text-success{% endif %}">
+                                        <b>{{ test[3]|upper }}</b>
+                                    </td>
+                                    <td>
+                                        {{ test[4] }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+            {% else %}
+
+                        <p>No results match your selection. Try differnt search parameters.</p>
+
+            {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-3">
+        <div class="row">
+            <div class="col">
+                <!-- One day graphs and things might go here. -->
+
+                <div class="modal fade" id="TestResultModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content single-result-template">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                        <br>
+                      </div>
+                      <div class="modal-body">
+                        <p class="text-center">
+                            Loading result, please wait...
+                            <br><br>
+                            <img class="loading-gif" src="{{url_for('main.static', filename='images/loading.gif')}}" />
+                        </p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <span class="hidden modal_url">{{ url_for('main.single_test_post') }}</span>
+</div>
+{% endblock %}
+
+{% block javascript %}
+
+<script src="{{ url_for('main.static', filename='js/ajax_modal.js') }}"></script>
+
+{% endblock %}

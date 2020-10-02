@@ -1,0 +1,86 @@
+{% extends "main/base.html" %}
+
+{% block style %}
+    <style>
+        .welcome
+            {
+                width: 50%;
+            }
+    </style>
+{% endblock %}
+
+{%  block content %}
+
+<div class="row">
+    <div class="col-md-9">
+        <h3>Welcome</h3>
+        <p>
+            This is a flask web app that makes use of a redis task queue and
+            jQueries' AJAX function to fulfill asynchronous tasks. It was designed
+            as the production test portal for a digital musical instrument company.
+            The site serves two purposes. It can generate a standard report on
+            batches of test data in order to assess production efficiency, and it
+            guides technicians through the procedure of running individual instrument tests.
+        </p>
+
+        <p>
+            The individual instrument tests would be accessed through the 'Run a Production Test'
+            link in the navigation bar, but it won't function as intended unless the motor
+            controller that drives the gantry robot involved in the instrument tap test is
+            connected to the test set up.
+        </p>
+
+        <p>
+            Here are some quick links for the review of this site:
+        </p>
+
+        <br/>
+
+        <div class="row">
+            <div class="col-md-5">
+                <b>Asynchronously Generated Production Report:</b>
+            </div>
+            <div class="col-md-7">
+                <a href="{{ url_for('reports.production_report_submit', instrument='Cool-Instrument-Name',
+                                     start_date='2017-01-01', end_date='2020-01-01') }}">
+                    {{ url_for('reports.production_report_submit', instrument='Cool-Instrument-Name',
+                                     start_date='2017-01-01', end_date='2020-01-01') }}
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5">
+                <b>Paginated Test Results by Date Range:</b>
+            </div>
+            <div class="col-md-7">
+                <a href="{{ url_for('main.test_results_by_date', result_types='all',
+                instrument='Cool-Instrument-Name', start_date='2017-01-01', end_date='2020-01-01') }}">
+                    {{ url_for('main.test_results_by_date', result_types='all',
+                instrument='Cool-Instrument-Name', start_date='2017-01-01', end_date='2020-01-01') }}
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5">
+                <b>Test Results by Serial Number:</b>
+            </div>
+            <div class="col-md-7">
+                <a href="{{ url_for('main.test_results_by_sn', instrument='Cool-Instrument-Name',
+                         serial_number='L18470225') }}">
+                    {{ url_for('main.test_results_by_sn', instrument='Cool-Instrument-Name',
+                         serial_number='L18470225') }}
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+    </div>
+
+</div>
+
+{% endblock %}

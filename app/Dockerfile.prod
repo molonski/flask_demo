@@ -1,0 +1,81 @@
+###########
+# BUILDER #
+###########
+
+# pull official base image
+FROM python:3.8.3-alpine as builder
+
+# set work directory
+WORKDIR /usr/src/app
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# install psycopg2 dependencies
+RUN apk update \
+    && apk add postgresql-dev gcc python3-dev musl-dev
+
+# lint
+RUN pip install --upgrade pip
+RUN pip install flake8
+COPY . .
+# RUN flake8 --ignore=E501,F401 .
+
+# install dependencies
+COPY ./requirements.txt .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+
+
+#########
+# FINAL #/
+#########
+
+# pull official base image
+FROM python:3.8.3-alpine
+
+# environment variables
+ENV HOME=/home/web
+ENV APP_HOME=/home/web/app
+
+# create directory for the app user
+RUN mkdir -p $HOME
+
+# create the app user
+RUN addgroup -S app && adduser -S app -G app
+
+# create the appropriate directories
+RUN mkdir $HOME/logs
+RUN mkdir $APP_HOME
+RUN mkdir $APP_HOME/static
+RUN mkdir $APP_HOME/mediafiles
+
+# flask_collect will create a static folder in the app directory
+# RUN mkdir $APP_HOME/static
+
+WORKDIR $HOME
+
+# install dependencies
+RUN apk update && apk add libpq
+COPY --from=builder /usr/src/app/wheels $APP_HOME/wheels
+COPY --from=builder /usr/src/app/requirements.txt $APP_HOME
+RUN pip install --no-cache $APP_HOME/wheels/*
+
+# copy project
+COPY . $APP_HOME
+
+# chown all the files to the app user
+RUN chown -R app:app $HOME
+
+# move flask_demo.py file, utilities.py, entrypoint.sh,
+# and sample_data.sql up one directory level above app
+RUN mv $APP_HOME/flask_demo.py $HOME/flask_demo.py
+RUN mv $APP_HOME/utilities.py $HOME/utilities.py
+RUN mv $APP_HOME/entrypoints/entrypoint.prod.sh $HOME/entrypoint.prod.sh
+RUN mv $APP_HOME/sample_data.sql $HOME/sample_data.sql
+
+# change to the app user
+USER app
+
+# run entrypoint.prod.sh
+ENTRYPOINT ["/home/web/entrypoint.prod.sh"]

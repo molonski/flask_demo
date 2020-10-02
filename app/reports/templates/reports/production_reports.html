@@ -1,0 +1,104 @@
+{% extends "main/base.html" %}
+
+{%  block style %}
+    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+{% endblock %}
+
+{%  block content %}
+
+    <!-- results search forms -->
+
+    <div class="row">
+
+        {% if form %}
+
+            <h3 class="testresults">Production Reports</h3>
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                <table class="search_by_date_form">
+
+                    <tr>
+                        <td class="formlabel">{{form.instrument.label}}</td>
+                        <td class="formfield">{{form.instrument}}</td>
+                    </tr>
+                    <tr>
+                        <td></td><td>
+                            {% for error in form.instrument.errors %}
+                                <span class="text-danger">[{{ error }}]</span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="formlabel">{{form.start_date.label}}</td>
+                        <td class="formfield">{{form.start_date}}</td>
+                    </tr>
+                    <tr>
+                        <td></td><td>
+                            {% for error in form.start_date.errors %}
+                                <span class="text-danger">[{{ error }}]</span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="formlabel">{{form.end_date.label}}</td>
+                        <td class="formfield">{{form.end_date}}</td>
+                    </tr>
+                    <tr>
+                        <td></td><td>
+                            {% for error in form.end_date.errors %}
+                                <span class="text-danger">[{{ error }}]</span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr class="submit">
+                        <td></td><td>
+                            {{ form.submit() }}
+                        </td>
+                    </tr>
+
+                </table>
+            </form>
+        {% else %}
+            <p>
+                Problem loading the results request form.
+            </p>
+        {% endif %}
+    </div>
+
+  <!-- results table -->
+
+    {% if job_id %}
+        <div class="row production-report-results">
+            <div class="error-list row">
+            </div>
+
+            <div class="loading row">
+
+                <p>Please wait loading results...this could take a minute or two.</p>
+                <p>Your request has been assigned job id: <span class="job-id">{{ job_id }}</span></p>
+                <div id="progressbar"></div>
+            </div>
+
+            <div class="report-results row">
+            </div>
+        </div>
+    {% endif %}
+
+
+{% endblock %}
+
+
+{%  block javascript %}
+
+<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.min.js"></script>
+{% if job_id %}
+    <script src="{{ url_for('reports.static', filename='js/polling.js') }}"></script>
+{% endif %}
+{% endblock %}

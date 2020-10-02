@@ -1,0 +1,158 @@
+
+/* base */
+
+body { padding-top: 70px; }
+
+.container
+{
+    width: 90%;
+    margin-left: px;
+    margin-top: 10px;
+}
+
+img.navbar-brand-img
+{
+    height: 50px;
+    padding-right: 15px;
+    border-right: 1px solid #ddd;
+}
+
+ul.nav li.header
+{
+    border-right: 1px solid #ddd;
+}
+
+ul.nav li.loggedinuser
+{
+    border-right: none;
+    font-size: 1em;
+    color: #aaa;
+    vertical-align: center;
+    padding: 1em;
+}
+
+/* testresults */
+
+h3.testresults {
+    color: dimgrey;
+    padding: 0 10px 10px 10px;
+}
+
+.search-tab {
+    padding: 25px 0;
+}
+
+.formlabel
+{
+    padding: 10px 15px;
+    vertical-align: center;
+    color: dimgrey;
+    height: 50px;
+    width: 190px;
+}
+.formfield input, .formfield select
+{
+    height: 40px;
+    width: 172px;
+    border: 1px solid #aaa;
+}
+
+.formfield input {
+    padding: 0 10px;
+}
+
+.formfield select option
+{
+    padding: 0 10px;
+    height: 19px;
+}
+
+tr.submit td input
+{
+    margin-top: 10px;
+    width: 172px;
+    height: 25px;
+    background-color: lightgreen;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+}
+
+.table-nav
+{
+    padding: 20px 0;
+}
+
+.two-em
+{
+    font-size: 2em;
+}
+
+/* production reports */
+
+.error-list
+{
+    padding-left: 10px;
+}
+
+.loading
+{
+    height: 100px;
+    padding-left: 15px;
+    padding-top: 20px;
+}
+
+img.loading-gif
+{
+    height: 60px;
+    padding-left: 50px;
+    padding-top: 10px;
+}
+
+#progressbar
+{
+    height: 25px;
+    width: 25%;
+}
+
+.production-report-results
+{
+    padding: 15px 30px;
+}
+/* testrunner */
+
+.form-example-image
+{
+    border: 1px solid #333;
+    margin: 5px 0;
+    padding: 2px;
+}
+
+tr.test-plan-row td
+{
+    padding: 50px;
+}
+
+.bottom-pad
+{
+    height: 100px;
+}
+
+button.automated-tests {
+    width: 225px;
+    margin-bottom: 10px;
+}
+
+.testpanel
+{
+}
+
+.testpanel-body {
+    height: 360px;
+    overflow-x: scroll;
+    overflow-y: scroll;
+}
+
+pre.tpb
+{
+    margin: 0;
+}

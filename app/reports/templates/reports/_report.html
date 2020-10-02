@@ -1,0 +1,173 @@
+<br/>
+<hr/>
+
+{% if data['test_count'] == 0 %}
+
+    <p>No {{ data['instrument'] }} test data available for that date range. Adjust the dates and select again.</p>
+
+{% else %}
+
+    <h4 class="testresults">Production Summary of {{ data['instrument'] }} from {{ data['start_date'] }} to {{ data['end_date'] }} </h4>
+    <br>
+    <div class="row">
+        <div class="col-sm-6">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center">Total Tests</th>
+                        <th class="text-center">Total Pass Count</th>
+                        <th class="text-center">Total Fail Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="text-center">
+                        <td> {{data['test_count'] }} </td>
+                        <td class="text-success"> {{data['all_pie']['values'][0] }} </td>
+                        <td class="text-danger"> {{data['all_pie']['values'][1] }} </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div id="all-results-pie"><!-- Plotly chart will be drawn inside this DIV --></div>
+
+        </div>
+        <div class="col-sm-6">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center">Unique SNs</th>
+                        <th class="text-center">Passing SNs</th>
+                        <th class="text-center">Failing SNs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="text-center">
+                        <td> {{data['unique_sn'] }} </td>
+                        <td class="text-success"> {{data['sn_pie']['values'][0] }} </td>
+                        <td class="text-danger"> {{data['sn_pie']['values'][1] }} </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div id="unique-sn-results-pie"><!-- Plotly chart will be drawn inside this DIV --></div>
+
+        </div>
+    </div>
+
+    <br>
+    <br>
+    <h4>Test Durations:</h4>
+    <p>The average {{ data['instrument'] }} QA review in this time period took
+        <b>{{ data['duration_min_sec'] }}</b>.</p>
+
+    <div class="row">
+        <div class="col-sm-9">
+
+            <div id="duration-bar"><!-- Plotly chart will be drawn inside this DIV --></div>
+
+        </div>
+    </div>
+
+    <br>
+    <br>
+    <h4>Retest Rates:</h4>
+
+    {% if data['total_retests'] > 0 %}
+
+        <p>A total of <b>{{ data['total_retests'] }}</b> out of <b>{{ data['test_count'] }}</b> tests were retests, which
+           is a retest rate <b>{{ "%.1f"|format(data['total_retests'] / data['test_count'] * 100.0) }} %</b>.
+
+        <div class="row">
+            <div class="col-sm-6">
+
+                <div id="retest-bar"><!-- Plotly chart will be drawn inside this DIV --></div>
+
+            </div>
+            <div class="col-sm-6">
+
+                <div id="retest-pie"><!-- Plotly chart will be drawn inside this DIV --></div>
+
+            </div>
+        </div>
+
+        {% if data['retest_bar']['sns'] %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Retest Count</th>
+                                <th>Serial Numbers</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key in data['retest_bar']['sns']|sort %}
+                                <tr>
+                                    <td>{{ key }}</td>
+                                    <td>
+                                        {% for sn in data['retest_bar']['sns'][key]|sort %}
+                                            <a href="{{ url_for('main.test_results_by_sn', instrument=data['instrument'], serial_number=sn) }}" target="_blank">
+                                            {{ sn }}</a>,
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        {% endif %}
+
+    {% else %}
+
+        No units had to be tested more than once during this time period.
+
+    {% endif %}
+
+    {% if data['sensors'] %}
+        <br>
+        <br>
+        <h4>Sensor Pass Rates:</h4>
+        <p>This table summarizes the touch sensor results from all <b>{{data['test_count'] }}</b> tests.</p>
+        <p>Click on the table headers to sort by that column value, and use the text search field to filter
+            down the visible rows.</p>
+
+        <table id="sensors" class="display" style="width:100%">
+        </table>
+
+    {% endif %}
+
+    {% if data['components'] %}
+        <br>
+        <br>
+        <h4>Component Pass Rates:</h4>
+        <p>This table summarizes the results for each subcomponent test from
+            all <b>{{data['test_count'] }}</b>tests.</p>
+        <p>Click on the table headers to sort by that column value, and use the text search field to filter
+            down the visible rows.</p>
+
+        <table id="components" class="display" style="width:100%">
+        </table>
+
+    {% endif %}
+
+    {% if data['calcs'] %}
+        <br>
+        <br>
+        <h4>Calculation Pass Rates:</h4>
+        <p>This table summarizes the calculations done on the sensor
+            {% if data['components'] %}and subcomponent {% endif %}data from all
+            <b>{{data['test_count'] }}</b> tests.</p>
+        <p>Click on the table headers to sort by that column value, use the text search field to filter
+            down the visible rows.</p>
+
+        <table id="calcs" class="display" style="width:100%">
+        </table>
+
+    {% endif %}
+    <br>
+    <br>
+
+{% endif %}
