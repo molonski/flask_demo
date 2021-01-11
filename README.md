@@ -71,3 +71,4 @@ Use this command to halt the app:
 ```
 docker-compose -f docker-compose.prod.yml down -v
 ```
+
