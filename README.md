@@ -13,11 +13,15 @@ instrument tests.
 
 You can launch and review this project using Docker. First clone this repo:
 
-`git clone https://github.com/molonski/flask_demo.git`
+```
+git clone https://github.com/molonski/flask_demo.git
+```
 
 navigate into the project folder:
 
-`cd flask_demo`
+```
+cd flask_demo
+```
 
 Then run either the development environment or the production environment.
 
@@ -27,7 +31,10 @@ Then run either the development environment or the production environment.
 To review the web app using the flask development web server run 
 the following command in the flask_demo directory:
 
-`docker-compose up --build`
+```
+docker-compose build
+docker-compose up
+```
 
 The development version uses four Docker containers, one for each
 of the following: the python app, the postgres database, the redis
@@ -38,7 +45,9 @@ browser at the follwing url: [http://localhost:5000/](http://localhost:5000/)
 
 Use this command to halt the app:
 
-`docker-compose down -v`
+```
+docker-compose down -v
+```
 
 
 
@@ -49,11 +58,17 @@ an Nginx webserver, which unlike the flask development server,
 can handle a large volume of simultaneous requests. To start the 
 production version run the following command:
 
-`docker-compose -f docker-compose.prod.yml up --build`
+```
+docker-compose -f docker-compose.prod.yml build
+docker-compose -f docker-compose.prod.yml up
+```
 
 The production container will take a longer to build, and it
 can be viewed at this url: [http://localhost:1337/](http://localhost:1337/)
 
 Use this command to halt the app:
 
-`docker-compose -f docker-compose.prod.yml down -v`
+```
+docker-compose -f docker-compose.prod.yml down -v
+```
+
