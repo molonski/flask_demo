@@ -13,7 +13,7 @@ WORKDIR $HOME
 
 # install psycopg2 dependencies
 RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev linux-headers
+    && apk add make automake gcc g++ postgresql-dev python3-dev musl-dev linux-headers
 
 # install python dependencies
 RUN pip install --upgrade pip
