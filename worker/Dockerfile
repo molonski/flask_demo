@@ -9,7 +9,7 @@ WORKDIR /usr/src
 
 # install psycopg2 dependencies
 RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev
+    && apk add make automake postgresql-dev gcc g++ python3-dev musl-dev
 
 # install python dependencies
 COPY ./requirements.txt .
